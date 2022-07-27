@@ -1,0 +1,128 @@
+import unittest
+import time
+from selenium import webdriver 
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
+class TestRegister(unittest.TestCase): 
+
+    def setUp(self): 
+        self.browser = webdriver.Chrome(ChromeDriverManager().install())
+        
+    def test_a_success_register(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div/div[3]/div/div[2]/button").click() # klik button sign up
+        time.sleep(1)
+        browser.find_element(By.ID,"name_register").send_keys("nindyazh") # isi nama
+        time.sleep(1)
+        browser.find_element(By.ID,"email_register").send_keys("nindyazh@gmail.com") # isi email
+        time.sleep(1)
+        browser.find_element(By.ID,"password_register").send_keys("ninday1") # isi pass
+        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click() # klik button sign up
+        time.sleep(3)
+
+        # validasi
+        response_data = browser.find_element(By.ID,"swal2-title").text
+        response_message = browser.find_element(By.ID,"swal2-content").text
+
+        self.assertIn('berhasil', response_data)
+        self.assertEqual(response_message, 'created user!')
+
+    def test_a_failed_register_no_name(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div/div[3]/div/div[2]/button").click() # klik button sign up
+        time.sleep(1)
+        browser.find_element(By.ID,"name_register").send_keys("") # isi nama
+        time.sleep(1)
+        browser.find_element(By.ID,"email_register").send_keys("halonindy@gmail.com") # isi email
+        time.sleep(1)
+        browser.find_element(By.ID,"password_register").send_keys("halonin1") # isi pass
+        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click() # klik button sign up
+        time.sleep(3)
+
+        # validasi
+        response_data = browser.find_element(By.ID,"swal2-title").text
+        response_message = browser.find_element(By.ID,"swal2-content").text
+
+        self.assertIn('Email/Username/Password tidak boleh kosong', response_data)
+        self.assertEqual(response_message, 'Gagal Registrasi')
+
+    def test_a_failed_register_invalid_email(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div/div[3]/div/div[2]/button").click() # klik button sign up
+        time.sleep(1)
+        browser.find_element(By.ID,"name_register").send_keys("halonindy") # isi nama
+        time.sleep(1)
+        browser.find_element(By.ID,"email_register").send_keys("halonindy@gm") # isi email
+        time.sleep(1)
+        browser.find_element(By.ID,"password_register").send_keys("halonin1") # isi pass
+        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click() # klik button sign up
+        time.sleep(3)
+
+        # validasi
+        response_data = browser.find_element(By.ID,"swal2-title").text
+        response_message = browser.find_element(By.ID,"swal2-content").text
+
+        self.assertIn('Email tidak valid', response_data)
+        self.assertEqual(response_message, 'Cek kembali email anda')
+
+    def test_a_failed_register_alreadyregistered_email(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div/div[3]/div/div[2]/button").click() # klik button sign up
+        time.sleep(1)
+        browser.find_element(By.ID,"name_register").send_keys("a") # isi nama
+        time.sleep(1)
+        browser.find_element(By.ID,"email_register").send_keys("a@gmail.com") # isi email
+        time.sleep(1)
+        browser.find_element(By.ID,"password_register").send_keys("a") # isi pass
+        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click() # klik button sign up
+        time.sleep(3)
+
+        # validasi
+        response_data = browser.find_element(By.ID,"swal2-title").text
+        response_message = browser.find_element(By.ID,"swal2-content").text
+
+        self.assertIn('Email sudah terdaftar, gunakan Email lain', response_data)
+        self.assertEqual(response_message, 'Gagal Registrasi')
+
+    def test_a_failed_register_excedeedcharacter(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div/div[3]/div/div[2]/button").click() # klik button sign up
+        time.sleep(1)
+        browser.find_element(By.ID,"name_register").send_keys("halonindy") # isi nama
+        time.sleep(1)
+        browser.find_element(By.ID,"email_register").send_keys("halonindy@gmail.com") # isi email
+        time.sleep(1)
+        browser.find_element(By.ID,"password_register").send_keys("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn") # isi pass
+        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click() # klik button sign up
+        time.sleep(3)
+
+        # validasi
+        response_data = browser.find_element(By.ID,"swal2-title").text
+        response_message = browser.find_element(By.ID,"swal2-content").text
+
+        self.assertIn('Email/Username/Password melebihin maksimal karakter', response_data)
+        self.assertEqual(response_message, 'Gagal Registrasi')
+
+if __name__ == "__main__": 
+    unittest.main()
