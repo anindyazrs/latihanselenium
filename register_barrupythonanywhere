@@ -32,7 +32,7 @@ class TestRegister(unittest.TestCase):
         self.assertIn('berhasil', response_data)
         self.assertEqual(response_message, 'created user!')
 
-    def test_a_failed_register_no_name(self): 
+    def test_b_failed_register_no_name(self): 
         # steps
         browser = self.browser #buka web browser
         browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
@@ -55,7 +55,7 @@ class TestRegister(unittest.TestCase):
         self.assertIn('Email/Username/Password tidak boleh kosong', response_data)
         self.assertEqual(response_message, 'Gagal Registrasi')
 
-    def test_a_failed_register_invalid_email(self): 
+    def test_c_failed_register_invalid_email(self): 
         # steps
         browser = self.browser #buka web browser
         browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
@@ -78,7 +78,7 @@ class TestRegister(unittest.TestCase):
         self.assertIn('Email tidak valid', response_data)
         self.assertEqual(response_message, 'Cek kembali email anda')
 
-    def test_a_failed_register_alreadyregistered_email(self): 
+    def test_d_failed_register_alreadyregistered_email(self): 
         # steps
         browser = self.browser #buka web browser
         browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
@@ -101,7 +101,7 @@ class TestRegister(unittest.TestCase):
         self.assertIn('Email sudah terdaftar, gunakan Email lain', response_data)
         self.assertEqual(response_message, 'Gagal Registrasi')
 
-    def test_a_failed_register_excedeedcharacter(self): 
+    def test_e_failed_register_excedeedcharacter(self): 
         # steps
         browser = self.browser #buka web browser
         browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
